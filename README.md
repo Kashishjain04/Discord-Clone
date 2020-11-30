@@ -1,4 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+Discord Clone made using React and Redux
+Open [Discord](https://discord-04.web.app) to view the hosted version of the clone.
 
 ## Available Scripts
 
