@@ -13,12 +13,11 @@ const Login = () => {
     <div className="login">
       <div className="login__logo">
         <img
-          width="800px"
           src="https://1000logos.net/wp-content/uploads/2020/10/Discord-logo.png"
           alt="logo"
         />
       </div>
-      <Button onClick={login}>Signin</Button>
+      <Button onClick={login}>Sign in</Button>
     </div>
   );
 };
