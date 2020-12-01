@@ -6,14 +6,30 @@ import Chat from "./Chat/Chat";
 import { login, logout, selectUser } from "./features/userSlice";
 import firebase from "./firebase";
 import Sidebar from "./Sidebar/Sidebar";
+import M from "materialize-css";
 
+const db = firebase.firestore();
 const auth = firebase.auth();
+const messaging = firebase.messaging();
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
   useEffect(() => {
+    Notification.requestPermission().catch(() =>
+      M.toast({
+        html: "Permission required to send push notifications",
+        classes: "toast error-toast",
+      })
+    );
+    messaging.getToken().then((token) => {
+      db.collection("fcm")
+        .doc("fcm")
+        .update({
+          tokens: firebase.firestore.FieldValue.arrayUnion(token),
+        });
+    });
     auth.onAuthStateChanged((user) => {
       if (user) {
         dispatch(
@@ -29,9 +45,11 @@ function App() {
       }
     });
   }, [dispatch]);
-
+  messaging.onMessage((payload) => {
+    console.log(payload);
+  });
   return (
-    // BEM classes naming convention
+    // BEM naming convention
     <div className="app">
       {user ? (
         <>
