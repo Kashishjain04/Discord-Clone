@@ -1,5 +1,5 @@
 Discord Clone made using React and Redux<br />
-Open [Discord](https://discord-04.web.app) to view the hosted version of the clone.
+Open [https://discord-04.web.app](https://discord-04.web.app) to view the hosted version of the clone.
 
 ## Available Scripts
 
