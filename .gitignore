@@ -24,3 +24,4 @@ yarn-error.log*
 
 # firebase
 /src/firebase.js
+/public/firebase-messaging-sw.js
