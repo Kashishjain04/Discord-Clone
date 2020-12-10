@@ -10,11 +10,11 @@ exports.myFunction = functions.firestore
     userName = change.after.data().user.displayName;
     photo = change.after.data().user.photo;
     message = change.after.data().message;
-    const channelName = await db
+    const { channelName, fcmTokens } = await db
       .collection("channels")
       .doc(context.params.channelId)
       .get()
-      .then((doc) => doc.data().channelName);
+      .then((doc) => doc.data());
 
     const payload = {
       notification: {
@@ -23,13 +23,13 @@ exports.myFunction = functions.firestore
         icon: photo,
       },
     };
-    const fcmTokens = await Promise.all([
-      db
-        .collection("fcm")
-        .doc("fcm")
-        .get()
-        .then((doc) => doc.data().tokens),
-    ]);
+    // const fcmTokens = await Promise.all([
+    //   db
+    //     .collection("fcm")
+    //     .doc("fcm")
+    //     .get()
+    //     .then((doc) => doc.data().tokens),
+    // ]);
     if (!fcmTokens.length) {
       return console.log("There are no notification tokens to send to.");
     }
@@ -49,10 +49,12 @@ exports.myFunction = functions.firestore
           error.code === "messaging/invalid-registration-token" ||
           error.code === "messaging/registration-token-not-registered"
         ) {
-          db.collection("fcm")
-            .doc("fcm")
+          db.collection("channels")
+            .doc(context.params.channelId)
             .update({
-              tokens: admin.firestore.FieldValue.arrayRemove(fcmTokens[index]),
+              fcmTokens: admin.firestore.FieldValue.arrayRemove(
+                fcmTokens[index]
+              ),
             });
         }
       }
@@ -62,7 +64,7 @@ exports.myFunction = functions.firestore
 exports.onSignUp = functions.auth.user().onCreate((user) => {
   obj = {
     displayName: user.displayName,
-    uid: user.uid,
+    email: user.email,
     photo: user.photoURL,
   };
   db.collection("users").doc(user.uid).create(obj);
