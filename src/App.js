@@ -23,13 +23,16 @@ function App() {
         classes: "toast error-toast",
       })
     );
-    messaging.getToken().then((token) => {
-      db.collection("fcm")
-        .doc("fcm")
-        .update({
-          tokens: firebase.firestore.FieldValue.arrayUnion(token),
-        });
-    });
+    messaging
+      .getToken()
+      .then((token) => {
+        db.collection("fcm")
+          .doc("fcm")
+          .update({
+            tokens: firebase.firestore.FieldValue.arrayUnion(token),
+          });
+      })
+      .catch((err) => console.log(err.message));
     auth.onAuthStateChanged((user) => {
       if (user) {
         dispatch(

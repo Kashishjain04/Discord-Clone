@@ -25,22 +25,28 @@ const Sidebar = () => {
   const [channels, setChannels] = useState([]);
 
   useEffect(() => {
-    db.collection("channels").onSnapshot((snap) =>
-      setChannels(
-        snap.docs.map((doc) => ({
-          id: doc.id,
-          channelName: doc.data().channelName,
-        }))
-      )
-    );
-  }, []);
+    db.collection("users")
+      .doc(user.uid)
+      .onSnapshot((snap) => setChannels(snap.data().channels));
+  }, [user.uid]);
 
   const handleAddChannel = () => {
     const channelName = prompt("Enter name of new channel");
     if (channelName) {
-      db.collection("channels").add({
-        channelName,
-      });
+      db.collection("channels")
+        .add({
+          channelName,
+        })
+        .then((doc) => {
+          db.collection("users")
+            .doc(user.uid)
+            .update({
+              channels: firebase.firestore.FieldValue.arrayUnion({
+                channelId: doc.id,
+                channelName,
+              }),
+            });
+        });
     }
   };
 
@@ -59,8 +65,12 @@ const Sidebar = () => {
           <Add onClick={handleAddChannel} className="sidebar__addChannel" />
         </div>
         <div className="sidebar__channelsList">
-          {channels.map(({ id, channelName }) => (
-            <SidebarChannel key={id} channelId={id} channelName={channelName} />
+          {channels?.map(({ channelId, channelName }) => (
+            <SidebarChannel
+              key={channelId}
+              channelId={channelId}
+              channelName={channelName}
+            />
           ))}
         </div>
       </div>
