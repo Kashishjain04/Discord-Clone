@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import SidebarChannel from "./SidebarChannel";
 import {
-  Add,
   Call,
-  ExpandMore,
   Headset,
   InfoOutlined,
   Mic,
@@ -30,39 +27,16 @@ const Sidebar = () => {
       .onSnapshot((snap) => setChannels(snap.data().channels));
   }, [user.uid]);
 
-  const handleAddChannel = () => {
-    const channelName = prompt("Enter name of new channel");
-    if (channelName) {
-      db.collection("channels")
-        .add({
-          channelName,
-        })
-        .then((doc) => {
-          db.collection("users")
-            .doc(user.uid)
-            .update({
-              channels: firebase.firestore.FieldValue.arrayUnion({
-                channelId: doc.id,
-                channelName,
-              }),
-            });
-        });
-    }
-  };
-
   return (
     <div className="sidebar">
       <div className="sidebar__top">
         <h3>{user.displayName}</h3>
-        <ExpandMoreIcon />
       </div>
       <div className="sidebar__channels">
         <div className="sidebar__channelsHeader">
           <div className="sidebar__header">
-            <ExpandMore />
             <h4>Text Channels</h4>
           </div>
-          <Add onClick={handleAddChannel} className="sidebar__addChannel" />
         </div>
         <div className="sidebar__channelsList">
           {channels?.map(({ channelId, channelName }) => (
@@ -77,7 +51,7 @@ const Sidebar = () => {
       <div className="sidebar__voice">
         <SignalCellularAlt className="sidebar__voiceIcon" fontSize="large" />
         <div className="sidebar__voiceInfo">
-          <h3>Voice Connected</h3>
+          <h3>Online</h3>
           <p>General</p>
         </div>
         <div className="sidebar__voiceIcons">
