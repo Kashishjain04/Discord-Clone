@@ -8,9 +8,10 @@
 
 .sidebar__top {
   display: flex;
+  height: 45px;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px 20px;
   background-color: #2f3135;
   color: white;
   border-bottom: 3px solid #26282c;

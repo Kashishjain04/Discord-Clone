@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
 import SidebarChannel from "./SidebarChannel";
-import {
-  Call,
-  Headset,
-  InfoOutlined,
-  Mic,
-  Settings,
-  SignalCellularAlt,
-} from "@material-ui/icons";
+import { ExitToApp, SignalCellularAlt } from "@material-ui/icons";
 import { Avatar } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
@@ -54,21 +47,18 @@ const Sidebar = () => {
           <h3>Online</h3>
           <p>General</p>
         </div>
-        <div className="sidebar__voiceIcons">
-          <InfoOutlined />
-          <Call />
-        </div>
       </div>
       <div className="sidebar__profile">
-        <Avatar src={user.photo} onClick={() => auth.signOut()} />
+        <Avatar src={user.photo} />
         <div className="sidebar__profileInfo">
           <h3>{user.displayName}</h3>
           <p>#{user.uid.substring(0, 5)}</p>
         </div>
         <div className="sidebar__profileIcons">
-          <Mic />
-          <Headset />
-          <Settings />
+          <ExitToApp
+            className="sidebar__addChannel"
+            onClick={() => auth.signOut()}
+          />
         </div>
       </div>
     </div>
