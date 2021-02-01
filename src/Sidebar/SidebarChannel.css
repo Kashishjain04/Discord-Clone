@@ -5,14 +5,29 @@
 
 .sidebarChannel > h4 {
   display: flex;
-  padding-left: 15px;
+  padding: 0 15px;
   align-items: center;
+  justify-content: space-between;
   background-color: #2f3135;
   color: grey;
   cursor: pointer;
 }
 
+.sidebarChannel__left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
 .sidebarChannel__hash {
   font-size: 30px;
   padding: 8px;
+}
+
+.sidebarChannel__delete {
+  color: grey !important;
+}
+
+.sidebarChannel__delete:hover {
+  color: white !important;
 }
